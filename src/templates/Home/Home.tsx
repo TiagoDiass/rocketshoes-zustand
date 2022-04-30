@@ -2,10 +2,6 @@ import { useEffect, useState } from 'react';
 import { productService } from 'services/requests';
 import { Product } from 'types';
 
-// [alias]
-// 	st = !git status
-// 	c = !git add --all && git commit -m
-
 export default function Home() {
   const [, setProducts] = useState<Product[]>([]);
 

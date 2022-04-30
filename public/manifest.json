@@ -3,12 +3,12 @@
   "short_name": "Next.js Boilerplate",
   "icons": [
     {
-      "src": "/img/icon-192.png",
+      "src": "/img/favicon-rocketshoes.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/img/icon-512.png",
+      "src": "/img/favicon-rocketshoes.png",
       "type": "image/png",
       "sizes": "512x512"
     }

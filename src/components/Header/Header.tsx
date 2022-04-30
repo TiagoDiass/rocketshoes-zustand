@@ -1,12 +1,13 @@
 import * as S from './Header.styles';
 import { MdShoppingBasket } from 'react-icons/md';
+import Link from 'next/link';
 
 function Header() {
   return (
     <S.Wrapper>
-      <a href='/'>
+      <Link href='/'>
         <img src='/img/logo-rocketshoes.svg' alt='Rocketshoes' />
-      </a>
+      </Link>
 
       <S.Cart>
         <div>

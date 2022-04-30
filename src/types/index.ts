@@ -4,3 +4,8 @@ export type Product = {
   price: number;
   image: string;
 };
+
+export type Stock = {
+  id: number;
+  amount: number;
+};

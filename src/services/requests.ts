@@ -1,20 +1,36 @@
-import { Product } from 'types';
+import axios from 'axios';
+import { Product, Stock } from 'types';
 
 const BASE_URL = 'http://localhost:3333';
 
-type RequestResult<T> = {
+const api = axios.create({
+  baseURL: BASE_URL,
+  validateStatus: (status) => status < 500
+});
+
+export type RequestResult<T> = {
   status: number;
   data?: T;
 };
 
 export const productService = {
   getAll: async (): Promise<RequestResult<Product[]>> => {
-    const response = await fetch(`${BASE_URL}/products`);
-    const data = await response.json();
+    const response = await api.get('/products');
 
     return {
       status: 200,
-      data
+      data: response.data
+    };
+  }
+};
+
+export const stockService = {
+  getStockByProductId: async (productId: number): Promise<RequestResult<Stock>> => {
+    const response = await api.get(`/stock/${productId}`);
+
+    return {
+      status: 200,
+      data: response.data
     };
   }
 };

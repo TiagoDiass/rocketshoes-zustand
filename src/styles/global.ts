@@ -18,13 +18,14 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body, input, button {
-    font: 14px 'Roboto', sans-serif;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
   }
 
   *, button, input {
     border: 0;
     background: none;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     transition: color .2s ease-out;
   }
 

@@ -9,7 +9,7 @@ export default function ProductCard(product: Product) {
 
   return (
     <S.Wrapper>
-      <S.Image src={image} alt={title} />
+      <S.Image src={image} alt={title} loading='lazy' />
 
       <S.Info>
         <span className='title'>{title}</span>

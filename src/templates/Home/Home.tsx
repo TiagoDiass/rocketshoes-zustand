@@ -17,5 +17,5 @@ export default function Home() {
     fetch();
   }, []);
 
-  return <h1>booya</h1>;
+  return <h1>booyakatcha</h1>;
 }

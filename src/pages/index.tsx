@@ -1,21 +1,5 @@
-import { useEffect, useState } from 'react';
-import { productService } from 'services/requests';
-import { Product } from 'types';
+import HomeTemplate from 'templates/Home/Home';
 
 export default function Home() {
-  const [, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    async function fetch() {
-      const response = await productService.getAll();
-
-      if (response.status === 200) {
-        setProducts(response.data!);
-      }
-    }
-
-    fetch();
-  }, []);
-
-  return <div />;
+  return <HomeTemplate />;
 }

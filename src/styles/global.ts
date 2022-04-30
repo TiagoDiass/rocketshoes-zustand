@@ -8,16 +8,38 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    font-size: 62.5%; // 10px
-  }
-
-  html, body, #__next {
-    height: 100%;
+    min-height: 100%;
+    background-color: var(--primary);
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: #191920 url('/img/background.svg') no-repeat center top;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body, input, button {
+    font: 14px Roboto, sans-serif;
+  }
+
+  *, button, input {
+    border: 0;
+    background: none;
+    font-family: Roboto;
+    transition: color .2s ease-out;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  #__next {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 20px 50px;
   }
 `;
 

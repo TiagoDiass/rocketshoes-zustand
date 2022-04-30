@@ -1,3 +1,4 @@
+import { Header } from 'components';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
@@ -17,13 +18,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel='manifest' href='manifest.json' />
         <meta
           name='description'
-          content='A boilerplate to work with Next.js, Typescript and more.'
+          content='A small application developed with the aim of learning Zustand.'
         />
-        <title>Next.js Boilerplate</title>
+        <title>Rocketshoes</title>
       </Head>
 
       <ThemeProvider theme={theme}>
         <GlobalStyles />
+
+        <Header />
         <Component {...pageProps} />
       </ThemeProvider>
     </>

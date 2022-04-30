@@ -34,9 +34,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang='en-US'>
         <Head>
-          <link rel='preconnect' href='https://fonts.gstatic.com' />
+          <link rel='preconnect' href='https://fonts.googleapis.com' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='true' />
           <link
-            href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lexend:wght@300;500;600&display=swap'
+            href='https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap'
             rel='stylesheet'
           />
         </Head>

@@ -1,9 +1,12 @@
+import { ProductCard } from 'components';
 import { useEffect, useState } from 'react';
 import { productService } from 'services/requests';
 import { Product } from 'types';
 
+import * as S from './Home.styles';
+
 export default function Home() {
-  const [, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     async function fetch() {
@@ -17,5 +20,13 @@ export default function Home() {
     fetch();
   }, []);
 
-  return <h1>booyakatchasss</h1>;
+  return (
+    <S.Wrapper>
+      <S.ProductsList>
+        {products.map((product) => (
+          <ProductCard key={product.id} {...product} />
+        ))}
+      </S.ProductsList>
+    </S.Wrapper>
+  );
 }

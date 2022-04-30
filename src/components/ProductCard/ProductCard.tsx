@@ -1,9 +1,11 @@
+import { useMemo } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { Product } from 'types';
 import * as S from './ProductCard.styles';
 
 export default function ProductCard(product: Product) {
   const { title, image, price } = product;
+  const formattedPrice = useMemo(() => price.toFixed(2).replace('.', ','), [price]);
 
   return (
     <S.Wrapper>
@@ -11,7 +13,7 @@ export default function ProductCard(product: Product) {
 
       <S.Info>
         <span className='title'>{title}</span>
-        <span className='price'>R$ {price.toFixed(2).replace('.', ',')}</span>
+        <span className='price'>R$ {formattedPrice}</span>
       </S.Info>
 
       <S.Button

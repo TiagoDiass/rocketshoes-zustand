@@ -11,7 +11,8 @@
     "test:watch": "yarn test --watch",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook -s ./public",
-    "generate": "yarn plop --plopfile ./generators/plopfile.js"
+    "generate": "yarn plop --plopfile ./generators/plopfile.js",
+    "start:api": "json-server server.json -p 3333 -d 1000"
   },
   "lint-staged": {
     "src/**/*": [
@@ -51,6 +52,7 @@
     "husky": "^7.0.4",
     "jest": "^27.4.3",
     "jest-styled-components": "^7.0.8",
+    "json-server": "^0.17.0",
     "lint-staged": "^12.1.2",
     "plop": "^3.0.5",
     "prettier": "2.5.1",

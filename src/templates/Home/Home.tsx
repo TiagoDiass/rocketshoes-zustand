@@ -1,24 +1,16 @@
 import { ProductCard } from 'components';
-import { useEffect, useState } from 'react';
-import { productService } from 'services/requests';
-import { Product } from 'types';
+import { useEffect } from 'react';
+import useProductsStore from 'store/products/products.store';
 
 import * as S from './Home.styles';
 
 export default function Home() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const products = useProductsStore((store) => store.products);
+  const fetchProducts = useProductsStore((store) => store.fetchProducts);
 
   useEffect(() => {
-    async function fetch() {
-      const response = await productService.getAll();
-
-      if (response.status === 200) {
-        setProducts(response.data!);
-      }
-    }
-
-    fetch();
-  }, []);
+    fetchProducts();
+  }, [fetchProducts]);
 
   return (
     <S.Wrapper>

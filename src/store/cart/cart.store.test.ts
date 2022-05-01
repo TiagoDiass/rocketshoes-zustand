@@ -107,6 +107,20 @@ describe('Store: Cart', () => {
     });
   });
 
-  it.todo('should remove a product correctly');
+  it('should remove a product correctly', async () => {
+    getStockByProductIdSpy.mockResolvedValue({ status: 200, data: { id: product1.id, amount: 3 } });
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+
+    act(() => {
+      result.current.actions.removeProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(0);
+  });
   it.todo('should remove all products');
 });

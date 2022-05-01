@@ -78,7 +78,11 @@ const useCartStore = create<CartStore>()((set) => {
           const productIndex = products.findIndex((product) => product.id === productToRemove.id);
 
           if (productIndex !== -1) {
-            products.splice(productIndex, 1);
+            const productAmount = products[productIndex].amount;
+
+            productAmount === 1
+              ? products.splice(productIndex, 1)
+              : products[productIndex].amount--;
           }
 
           return { ...store, state: { ...store.state, products: [...products] } };

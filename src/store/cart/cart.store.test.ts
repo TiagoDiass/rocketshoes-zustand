@@ -124,6 +124,26 @@ describe('Store: Cart', () => {
     expect(result.current.state.products).toHaveLength(0);
   });
 
+  it('should decrement the product.amount correctly', async () => {
+    getStockByProductIdSpy.mockResolvedValue({ status: 200, data: { id: product1.id, amount: 3 } });
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+    expect(result.current.state.products[0].amount).toBe(3);
+
+    act(() => {
+      result.current.actions.removeProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+    expect(result.current.state.products[0].amount).toBe(2);
+  });
+
   it('should remove all products correctly', async () => {
     getStockByProductIdSpy
       .mockResolvedValueOnce({ status: 200, data: { id: product1.id, amount: 2 } })

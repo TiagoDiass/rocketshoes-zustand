@@ -1,11 +1,26 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { ImSpinner2 } from 'react-icons/im';
+import useCartStore from 'store/cart/cart.store';
 import { Product } from 'types';
 import * as S from './ProductCard.styles';
 
 export default function ProductCard(product: Product) {
+  const addProductToCart = useCartStore((store) => store.actions.addProduct);
+  const [isLoading, setIsLoading] = useState(false);
   const { title, image, price } = product;
   const formattedPrice = useMemo(() => price.toFixed(2).replace('.', ','), [price]);
+
+  const handleAddProductToCart = async () => {
+    setIsLoading(true);
+    const { status, message } = await addProductToCart(product);
+    setIsLoading(false);
+
+    if (status === 'fail') {
+      // it should be a toast, but this is just a example project to check the way zustand works
+      alert(message);
+    }
+  };
 
   return (
     <S.Wrapper>
@@ -16,13 +31,9 @@ export default function ProductCard(product: Product) {
         <span className='price'>R$ {formattedPrice}</span>
       </S.Info>
 
-      <S.Button
-        onClick={() => {
-          console.log(product);
-        }}
-      >
-        <div className='amount'>
-          <MdAddShoppingCart />
+      <S.Button onClick={handleAddProductToCart}>
+        <div className={`amount ${isLoading && 'loading'}`}>
+          {isLoading ? <ImSpinner2 /> : <MdAddShoppingCart />}
         </div>
         <span className='text'>Add to cart</span>
       </S.Button>

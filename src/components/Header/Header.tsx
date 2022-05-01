@@ -1,8 +1,11 @@
 import * as S from './Header.styles';
 import { MdShoppingBasket } from 'react-icons/md';
 import Link from 'next/link';
+import useCartStore from 'store/cart/cart.store';
 
 function Header() {
+  const productsOnCart = useCartStore((store) => store.state.products);
+
   return (
     <S.Wrapper>
       <Link href='/'>
@@ -12,7 +15,9 @@ function Header() {
       <S.Cart>
         <div>
           <strong>Meu carrinho</strong>
-          <span>4 itens</span>
+          <span>
+            {productsOnCart.length > 0 ? `${productsOnCart.length} itens` : 'Nenhum item'}
+          </span>
         </div>
         <MdShoppingBasket size={36} color='#FFF' />
       </S.Cart>

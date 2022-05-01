@@ -56,6 +56,27 @@ export const Button = styled.button`
     display: flex;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.1);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  > .amount.loading {
+    svg {
+      animation: rotate infinite 1s linear;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
   }
 
   > .text {

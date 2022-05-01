@@ -19,4 +19,6 @@ describe('Component: ProductCard', () => {
     expect(screen.getByText('R$ 249,90')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Add to cart' })).toBeInTheDocument();
   });
+
+  it.todo('should call store.addProductToCart correctly when user clicks on add button');
 });

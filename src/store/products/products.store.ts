@@ -3,20 +3,29 @@ import { Product } from 'types';
 import { productService } from 'services/requests';
 
 export interface ProductsStore {
-  products: Product[];
-  fetchProducts: () => Promise<void>;
+  state: {
+    products: Product[];
+  };
+
+  actions: {
+    fetchProducts: () => Promise<void>;
+  };
 }
 
 const useProductsStore = create<ProductsStore>()((set) => {
   return {
-    products: [],
-    fetchProducts: async () => {
-      const response = await productService.getAll();
+    state: { products: [] },
 
-      return set((state) => ({
-        ...state,
-        products: response.status === 200 && !!response.data ? response.data : []
-      }));
+    actions: {
+      fetchProducts: async () => {
+        const response = await productService.getAll();
+        const products = response.status === 200 && !!response.data ? response.data : [];
+
+        return set((store) => ({
+          ...store,
+          state: { ...store.state, products }
+        }));
+      }
     }
   };
 });

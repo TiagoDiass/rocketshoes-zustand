@@ -37,15 +37,15 @@ describe('Store: Products', () => {
   });
 
   it('should start with state.products as an empty array', () => {
-    expect(result.current.products).toHaveLength(0);
+    expect(result.current.state.products).toHaveLength(0);
   });
 
   it('should fetchProducts correctly', async () => {
     await act(async () => {
-      await result.current.fetchProducts();
+      await result.current.actions.fetchProducts();
     });
 
-    expect(result.current.products).toHaveLength(productsMock.length);
-    expect(result.current.products).toEqual(productsMock);
+    expect(result.current.state.products).toHaveLength(productsMock.length);
+    expect(result.current.state.products).toEqual(productsMock);
   });
 });

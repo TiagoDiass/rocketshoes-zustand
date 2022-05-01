@@ -1,12 +1,11 @@
-import { ProductCard } from 'components';
 import { useEffect } from 'react';
 import useProductsStore from 'store/products/products.store';
-
+import { ProductCard } from 'components';
 import * as S from './Home.styles';
 
 export default function Home() {
-  const products = useProductsStore((store) => store.products);
-  const fetchProducts = useProductsStore((store) => store.fetchProducts);
+  const products = useProductsStore((store) => store.state.products);
+  const fetchProducts = useProductsStore((store) => store.actions.fetchProducts);
 
   useEffect(() => {
     fetchProducts();

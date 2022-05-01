@@ -20,5 +20,5 @@ describe('Component: ProductCard', () => {
     expect(screen.getByRole('button', { name: 'Add to cart' })).toBeInTheDocument();
   });
 
-  it.todo('should call store.addProductToCart correctly when user clicks on add button');
+  it.todo('should call props.addProductToCart correctly when user clicks on add button');
 });

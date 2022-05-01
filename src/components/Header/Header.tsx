@@ -6,6 +6,17 @@ import useCartStore from 'store/cart/cart.store';
 function Header() {
   const productsOnCart = useCartStore((store) => store.state.products);
 
+  // const getProductsAmountLabel = () => {
+  //   switch (productsOnCart.length) {
+  //     case 0:
+  //       return 'Nenhum item';
+  //     case 1:
+  //       return '1 item';
+  //     default:
+  //       return `${productsOnCart.length} itens`;
+  //   }
+  // };
+
   return (
     <S.Wrapper>
       <Link href='/'>

@@ -17,6 +17,7 @@ export interface CartStore {
   actions: {
     addProduct: (product: Product) => Promise<AddProductResult>;
     removeProduct: (product: Product) => void;
+    clear: () => void;
     reset: () => void;
   };
 }
@@ -82,6 +83,8 @@ const useCartStore = create<CartStore>()((set) => {
 
           return { ...store, state: { ...store.state, products: [...products] } };
         }),
+
+      clear: () => set({ state: { products: [] } }),
 
       reset: () => set((store) => ({ ...store, state: { ...initialState } }))
     }

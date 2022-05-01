@@ -4,6 +4,7 @@ import useCartStore, { CartStore } from './cart.store';
 import { stockService } from 'services/requests';
 
 const getStockByProductIdSpy = jest.spyOn(stockService, 'getStockByProductId');
+
 const product1: Product = {
   id: 1,
   title: 'Tênis de Caminhada Leve Confortável',
@@ -122,5 +123,23 @@ describe('Store: Cart', () => {
 
     expect(result.current.state.products).toHaveLength(0);
   });
-  it.todo('should remove all products');
+
+  it('should remove all products correctly', async () => {
+    getStockByProductIdSpy
+      .mockResolvedValueOnce({ status: 200, data: { id: product1.id, amount: 2 } })
+      .mockResolvedValueOnce({ status: 200, data: { id: product2.id, amount: 2 } });
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product2);
+    });
+
+    expect(result.current.state.products).toHaveLength(2);
+
+    act(() => {
+      result.current.actions.clear();
+    });
+
+    expect(result.current.state.products).toHaveLength(0);
+  });
 });

@@ -1,4 +1,4 @@
-// import { stockService } from 'services/requests';
+import { stockService } from 'services/requests';
 import { Product } from 'types';
 import create from 'zustand';
 
@@ -10,25 +10,67 @@ type AddProductResult = {
 type ProductOnCart = Product & { amount: number };
 
 export interface CartStore {
-  products: ProductOnCart[];
-  addProduct: (product: Product) => Promise<AddProductResult>;
+  state: {
+    products: ProductOnCart[];
+  };
+
+  actions: {
+    addProduct: (product: Product) => Promise<AddProductResult>;
+    reset: () => void;
+  };
 }
 
 const useCartStore = create<CartStore>()((set) => {
+  const initialState = { products: [] };
+
   return {
-    products: [],
-    addProduct: async (product) => {
-      // const response = await stockService.getStockByProductId(product.id);
-      const productToAdd: ProductOnCart = {
-        ...product,
-        amount: 1
-      };
+    state: {
+      ...initialState
+    },
 
-      set((state) => ({ ...state, products: [...state.products, productToAdd] }));
+    actions: {
+      addProduct: async (product) => {
+        const response = await stockService.getStockByProductId(product.id);
+        const productAmountOnStock = response.data?.amount;
+        let addResult: AddProductResult = { status: 'fail' };
 
-      return {
-        status: 'success'
-      };
+        if (!productAmountOnStock)
+          return { status: 'fail', message: 'There is no product with the specified ID' };
+
+        const productToAdd: ProductOnCart = {
+          ...product,
+          amount: 1
+        };
+
+        set((store) => {
+          const products = [...store.state.products];
+          const productIndex = products.findIndex((product) => product.id === productToAdd.id);
+
+          if (productIndex === -1) {
+            products.push(productToAdd);
+            addResult.status = 'success';
+          } else {
+            if (productAmountOnStock > products[productIndex].amount) {
+              products[productIndex].amount++;
+              addResult.status = 'success';
+            } else {
+              addResult = {
+                status: 'fail',
+                message: 'Requested amount is currecntly out of stock'
+              };
+            }
+          }
+
+          return {
+            ...store,
+            state: { ...store.state, products: [...products] }
+          };
+        });
+
+        return addResult;
+      },
+
+      reset: () => set((store) => ({ ...store, state: { ...initialState } }))
     }
   };
 });

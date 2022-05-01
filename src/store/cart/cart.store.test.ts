@@ -1,6 +1,22 @@
 import { act, renderHook, RenderResult } from '@testing-library/react-hooks';
 import { Product } from 'types';
 import useCartStore, { CartStore } from './cart.store';
+import { stockService } from 'services/requests';
+
+const getStockByProductIdSpy = jest.spyOn(stockService, 'getStockByProductId');
+const product1: Product = {
+  id: 1,
+  title: 'Tênis de Caminhada Leve Confortável',
+  price: 179.9,
+  image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg'
+};
+
+const product2: Product = {
+  id: 3,
+  title: 'Tênis Adidas Duramo Lite 2.0',
+  price: 219.9,
+  image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg'
+};
 
 describe('Store: Cart', () => {
   let result: RenderResult<CartStore>;
@@ -9,34 +25,30 @@ describe('Store: Cart', () => {
     result = renderHook(() => useCartStore()).result;
   });
 
+  afterEach(() => {
+    act(() => {
+      result.current.actions.reset();
+    });
+  });
+
   it('should start with state.products empty', () => {
-    expect(result.current.products).toHaveLength(0);
+    expect(result.current.state.products).toHaveLength(0);
   });
 
   it('should add products correctly', async () => {
-    const product1: Product = {
-      id: 1,
-      title: 'Tênis de Caminhada Leve Confortável',
-      price: 179.9,
-      image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg'
-    };
-
-    const product2: Product = {
-      id: 3,
-      title: 'Tênis Adidas Duramo Lite 2.0',
-      price: 219.9,
-      image: 'https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg'
-    };
+    getStockByProductIdSpy
+      .mockResolvedValueOnce({ status: 200, data: { id: product1.id, amount: 2 } })
+      .mockResolvedValueOnce({ status: 200, data: { id: product2.id, amount: 2 } });
 
     let addProductResult1, addProductResult2;
 
     await act(async () => {
-      addProductResult1 = await result.current.addProduct(product1);
-      addProductResult2 = await result.current.addProduct(product2);
+      addProductResult1 = await result.current.actions.addProduct(product1);
+      addProductResult2 = await result.current.actions.addProduct(product2);
     });
 
-    expect(result.current.products).toHaveLength(2);
-    expect(result.current.products).toEqual([
+    expect(result.current.state.products).toHaveLength(2);
+    expect(result.current.state.products).toEqual([
       { ...product1, amount: 1 },
       { ...product2, amount: 1 }
     ]);
@@ -45,7 +57,56 @@ describe('Store: Cart', () => {
     expect(addProductResult2).toEqual({ status: 'success' });
   });
 
-  it.todo('should not add same product twice');
+  it('should increment amount of product when its already in the list', async () => {
+    getStockByProductIdSpy.mockResolvedValue({ status: 200, data: { id: product1.id, amount: 3 } });
+
+    let addProductResult;
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+    expect(result.current.state.products[0]).toEqual({
+      ...product1,
+      amount: 1
+    });
+
+    await act(async () => {
+      addProductResult = await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+    expect(result.current.state.products[0]).toEqual({
+      ...product1,
+      amount: 2
+    });
+    expect(addProductResult).toEqual({ status: 'success' });
+  });
+
+  it("should not increment the amount of a product if there's no more in stock", async () => {
+    getStockByProductIdSpy.mockResolvedValue({ status: 200, data: { id: product1.id, amount: 2 } });
+
+    let addProductResult;
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product1);
+      addProductResult = await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+    expect(result.current.state.products[0]).toEqual({
+      ...product1,
+      amount: 2
+    });
+
+    expect(addProductResult).toEqual({
+      status: 'fail',
+      message: 'Requested amount is currecntly out of stock'
+    });
+  });
+
   it.todo('should remove a product correctly');
   it.todo('should remove all products');
 });

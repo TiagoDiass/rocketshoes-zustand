@@ -64,8 +64,7 @@ const useCartStore = create<CartStore>()((set) => {
           }
 
           return {
-            ...store,
-            state: { ...store.state, products: [...products] }
+            state: { products }
           };
         });
 
@@ -85,7 +84,7 @@ const useCartStore = create<CartStore>()((set) => {
               : products[productIndex].amount--;
           }
 
-          return { ...store, state: { ...store.state, products: [...products] } };
+          return { state: { products } };
         }),
 
       clear: () => set({ state: { products: [] } }),

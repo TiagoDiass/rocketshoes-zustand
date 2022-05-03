@@ -21,10 +21,9 @@ const useProductsStore = create<ProductsStore>()((set) => {
         const response = await productService.getAll();
         const products = response.status === 200 && !!response.data ? response.data : [];
 
-        return set((store) => ({
-          ...store,
-          state: { ...store.state, products }
-        }));
+        return set({
+          state: { products }
+        });
       }
     }
   };

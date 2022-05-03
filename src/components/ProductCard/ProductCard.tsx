@@ -17,7 +17,7 @@ export default function ProductCard(product: Product) {
     setIsLoading(false);
 
     if (status === 'fail') {
-      // it should be a toast, but this is just a example project to check the way zustand works
+      // it should be a toast, but this is just an example project to check the way zustand works
       alert(message);
     }
   };
@@ -33,7 +33,11 @@ export default function ProductCard(product: Product) {
 
       <S.Button onClick={handleAddProductToCart}>
         <div className={`amount ${isLoading && 'loading'}`}>
-          {isLoading ? <ImSpinner2 /> : <MdAddShoppingCart />}
+          {isLoading ? (
+            <ImSpinner2 aria-label='Loading...' />
+          ) : (
+            <MdAddShoppingCart aria-label='Shopping Cart Icon' />
+          )}
         </div>
         <span className='text'>Add to cart</span>
       </S.Button>

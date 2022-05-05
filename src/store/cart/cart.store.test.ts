@@ -104,7 +104,7 @@ describe('Store: Cart', () => {
 
     expect(addProductResult).toEqual({
       status: 'fail',
-      message: 'Requested amount is currecntly out of stock'
+      message: 'Requested amount is currently out of stock'
     });
   });
 

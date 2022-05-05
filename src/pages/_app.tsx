@@ -4,6 +4,8 @@ import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from 'styles';
 import theme from 'styles/theme';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * @component Next.js root component
@@ -25,6 +27,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <ThemeProvider theme={theme}>
         <GlobalStyles />
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
 
         <Header />
         <Component {...pageProps} />

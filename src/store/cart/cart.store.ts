@@ -58,7 +58,7 @@ const useCartStore = create<CartStore>()((set) => {
             } else {
               addResult = {
                 status: 'fail',
-                message: 'Requested amount is currecntly out of stock'
+                message: 'Requested amount is currently out of stock'
               };
             }
           }

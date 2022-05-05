@@ -5,6 +5,7 @@ import useCartStore from 'store/cart/cart.store';
 import { Product } from 'types';
 import * as S from './ProductCard.styles';
 import { formatNumberToCurrency } from 'utils/formatNumberToCurrency/formatNumberToCurrency';
+import { toast } from 'react-toastify';
 
 export default function ProductCard(product: Product) {
   const addProductToCart = useCartStore((store) => store.actions.addProduct);
@@ -18,8 +19,7 @@ export default function ProductCard(product: Product) {
     setIsLoading(false);
 
     if (status === 'fail') {
-      // it should be a toast, but this is just an example project to check the way zustand works
-      alert(message);
+      toast.error(message);
     }
   };
 

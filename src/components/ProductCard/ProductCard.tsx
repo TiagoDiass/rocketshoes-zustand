@@ -4,12 +4,13 @@ import { ImSpinner2 } from 'react-icons/im';
 import useCartStore from 'store/cart/cart.store';
 import { Product } from 'types';
 import * as S from './ProductCard.styles';
+import { formatNumberToCurrency } from 'utils/formatNumberToCurrency/formatNumberToCurrency';
 
 export default function ProductCard(product: Product) {
   const addProductToCart = useCartStore((store) => store.actions.addProduct);
   const [isLoading, setIsLoading] = useState(false);
   const { title, image, price } = product;
-  const formattedPrice = useMemo(() => price.toFixed(2).replace('.', ','), [price]);
+  const formattedPrice = useMemo(() => formatNumberToCurrency(price), [price]);
 
   const handleAddProductToCart = async () => {
     setIsLoading(true);
@@ -28,7 +29,7 @@ export default function ProductCard(product: Product) {
 
       <S.Info>
         <span className='title'>{title}</span>
-        <span className='price'>R$ {formattedPrice}</span>
+        <span className='price'>{formattedPrice}</span>
       </S.Info>
 
       <S.Button onClick={handleAddProductToCart}>

@@ -6,6 +6,7 @@ import { formatNumberToCurrency } from 'utils/formatNumberToCurrency/formatNumbe
 
 function Header() {
   const productsOnCart = useCartStore((store) => store.state.products);
+  const totalPrice = useCartStore((store) => store.state.totalPrice);
 
   const getProductsAmountLabel = () => {
     switch (productsOnCart.length) {
@@ -54,7 +55,7 @@ function Header() {
 
               <div className='total'>
                 <span>Total:</span>
-                <strong>{formatNumberToCurrency(productsOnCart[0].price)}</strong>
+                <strong>{formatNumberToCurrency(totalPrice)}</strong>
               </div>
             </>
           ) : (

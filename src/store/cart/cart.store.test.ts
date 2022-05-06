@@ -179,4 +179,20 @@ describe('Store: Cart', () => {
 
     expect(result.current.state.products).toHaveLength(0);
   });
+
+  it('should have total price of all products', async () => {
+    getStockByProductIdSpy
+      .mockResolvedValueOnce({ status: 200, data: { id: product1.id, amount: 2 } })
+      .mockResolvedValueOnce({ status: 200, data: { id: product2.id, amount: 2 } });
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product2);
+      await result.current.actions.addProduct(product2);
+    });
+
+    expect(result.current.state.products).toHaveLength(2);
+    expect(result.current.state.totalPrice).toBe(product1.price * 2 + product2.price * 2);
+  });
 });

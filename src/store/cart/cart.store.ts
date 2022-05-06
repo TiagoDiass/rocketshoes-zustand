@@ -12,6 +12,7 @@ type ProductOnCart = Product & { amount: number };
 export interface CartStore {
   state: {
     products: ProductOnCart[];
+    totalPrice: number;
   };
 
   actions: {
@@ -24,7 +25,7 @@ export interface CartStore {
 }
 
 const useCartStore = create<CartStore>()((set) => {
-  const initialState = { products: [] };
+  const initialState = { products: [], totalPrice: 0 };
 
   return {
     state: {
@@ -65,7 +66,13 @@ const useCartStore = create<CartStore>()((set) => {
           }
 
           return {
-            state: { products }
+            state: {
+              totalPrice:
+                addResult.status === 'success'
+                  ? store.state.totalPrice + productToAdd.price
+                  : store.state.totalPrice,
+              products
+            }
           };
         });
 
@@ -81,7 +88,7 @@ const useCartStore = create<CartStore>()((set) => {
             products.splice(productIndex, 1);
           }
 
-          return { state: { products } };
+          return { state: { ...store.state, products } };
         }),
 
       decrementProductAmount: (productToDecremet) =>
@@ -97,10 +104,10 @@ const useCartStore = create<CartStore>()((set) => {
               : products[productIndex].amount--;
           }
 
-          return { state: { products } };
+          return { state: { ...store.state, products } };
         }),
 
-      clear: () => set({ state: { products: [] } }),
+      clear: () => set({ state: { ...initialState } }),
 
       reset: () => set((store) => ({ ...store, state: { ...initialState } }))
     }

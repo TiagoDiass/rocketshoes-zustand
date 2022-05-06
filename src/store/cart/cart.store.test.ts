@@ -113,6 +113,7 @@ describe('Store: Cart', () => {
 
     await act(async () => {
       await result.current.actions.addProduct(product1);
+      await result.current.actions.addProduct(product1);
     });
 
     expect(result.current.state.products).toHaveLength(1);
@@ -137,11 +138,27 @@ describe('Store: Cart', () => {
     expect(result.current.state.products[0].amount).toBe(3);
 
     act(() => {
-      result.current.actions.removeProduct(product1);
+      result.current.actions.decrementProductAmount(product1);
     });
 
     expect(result.current.state.products).toHaveLength(1);
     expect(result.current.state.products[0].amount).toBe(2);
+  });
+
+  it('should remove a product when decrement a product with amount 1', async () => {
+    getStockByProductIdSpy.mockResolvedValue({ status: 200, data: { id: product1.id, amount: 3 } });
+
+    await act(async () => {
+      await result.current.actions.addProduct(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(1);
+
+    act(() => {
+      result.current.actions.decrementProductAmount(product1);
+    });
+
+    expect(result.current.state.products).toHaveLength(0);
   });
 
   it('should remove all products correctly', async () => {

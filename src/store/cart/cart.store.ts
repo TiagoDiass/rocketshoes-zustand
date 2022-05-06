@@ -17,6 +17,7 @@ export interface CartStore {
   actions: {
     addProduct: (product: Product) => Promise<AddProductResult>;
     removeProduct: (product: Product) => void;
+    decrementProductAmount: (product: Product) => void;
     clear: () => void;
     reset: () => void;
   };
@@ -75,6 +76,18 @@ const useCartStore = create<CartStore>()((set) => {
         set((store) => {
           const products = [...store.state.products];
           const productIndex = products.findIndex((product) => product.id === productToRemove.id);
+
+          if (productIndex !== -1) {
+            products.splice(productIndex, 1);
+          }
+
+          return { state: { products } };
+        }),
+
+      decrementProductAmount: (productToDecremet) =>
+        set((store) => {
+          const products = [...store.state.products];
+          const productIndex = products.findIndex((product) => product.id === productToDecremet.id);
 
           if (productIndex !== -1) {
             const productAmount = products[productIndex].amount;

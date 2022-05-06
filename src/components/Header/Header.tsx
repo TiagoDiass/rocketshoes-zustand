@@ -2,6 +2,7 @@ import * as S from './Header.styles';
 import { MdShoppingBasket } from 'react-icons/md';
 import Link from 'next/link';
 import useCartStore from 'store/cart/cart.store';
+import { formatNumberToCurrency } from 'utils/formatNumberToCurrency/formatNumberToCurrency';
 
 function Header() {
   const productsOnCart = useCartStore((store) => store.state.products);
@@ -24,11 +25,46 @@ function Header() {
       </Link>
 
       <S.Cart>
-        <div>
+        <div className='cart-data'>
           <strong>My cart</strong>
           <span data-testid='products-amount'>{getProductsAmountLabel()}</span>
         </div>
         <MdShoppingBasket size={36} color='#FFF' />
+
+        <S.CartItemsDropdown>
+          {productsOnCart.length > 0 ? (
+            <>
+              <ul>
+                {productsOnCart.map((product) => (
+                  <li key={product.id}>
+                    <div className='image'>
+                      <img src={product.image} alt={product.title} />
+                    </div>
+
+                    <div className='data'>
+                      <span className='title'>{product.title}</span>
+
+                      <span>
+                        {product.amount} x <strong>{formatNumberToCurrency(product.price)}</strong>
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className='total'>
+                <span>Total:</span>
+                <strong>{formatNumberToCurrency(productsOnCart[0].price)}</strong>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className='empty'>
+                Your cart is empty. <br /> Go shopping 😁
+              </p>
+            </>
+          )}
+        </S.CartItemsDropdown>
       </S.Cart>
     </S.Wrapper>
   );
